@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Kazuki Yoshida" />
+
+<meta name="date" content="2014-12-28" />
+
+<title>Introduction to tableone</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to tableone</h1>
+<h4 class="author"><em>Kazuki Yoshida</em></h4>
+<h4 class="date"><em>2014-12-28</em></h4>
+
+
+
+<div id="what-is-tableone" class="section level2">
+<h2>What is tableone?</h2>
+<p>The tableone package is an R package that eases the construction of “Table 1”, <em>i.e.</em>, patient baseline characteristics table commonly found in biomedical research papers. The packages can summarize both continuous and categorical variables mixed within one table. Categorical variables can be summarized as counts and/or percentages. Continuous variables can be summarized in the “normal” way (means and standard deviations) or “nonnormal” way (medians and interquartile ranges).</p>
+<p>A screencast demonstrating this vignette is available at: <a href="https://www.youtube.com/watch?v=IZgDKmOC0Wg&amp;feature=youtu.be" class="uri">https://www.youtube.com/watch?v=IZgDKmOC0Wg&amp;feature=youtu.be</a></p>
+</div>
+<div id="load-packages" class="section level2">
+<h2>Load packages</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## tableone package itself
+<span class="kw">library</span>(tableone)
+## survival pcakge for Mayo Clinic's PBC data
+<span class="kw">library</span>(survival)
+<span class="kw">data</span>(pbc)</code></pre></div>
+</div>
+<div id="single-group-summary" class="section level2">
+<h2>Single group summary</h2>
+<div id="simplest-use-case" class="section level3">
+<h3>Simplest use case</h3>
+<p>The simplest use case is summarizing the whole dataset. You can just feed in the data frame to the main workhorse function CreateTableOne(). You can see there are 418 patients in the dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">CreateTableOne</span>(<span class="dt">data =</span> pbc)</code></pre></div>
+<pre><code>                      
+                       Overall          
+  n                        418          
+  id (mean (sd))        209.50 (120.81) 
+  time (mean (sd))     1917.78 (1104.67)
+  status (mean (sd))      0.83 (0.96)   
+  trt (mean (sd))         1.49 (0.50)   
+  age (mean (sd))        50.74 (10.45)  
+  sex = f (%)              374 (89.5)   
+  ascites (mean (sd))     0.08 (0.27)   
+  hepato (mean (sd))      0.51 (0.50)   
+  spiders (mean (sd))     0.29 (0.45)   
+  edema (mean (sd))       0.10 (0.25)   
+  bili (mean (sd))        3.22 (4.41)   
+  chol (mean (sd))      369.51 (231.94) 
+  albumin (mean (sd))     3.50 (0.42)   
+  copper (mean (sd))     97.65 (85.61)  
+  alk.phos (mean (sd)) 1982.66 (2140.39)
+  ast (mean (sd))       122.56 (56.70)  
+  trig (mean (sd))      124.70 (65.15)  
+  platelet (mean (sd))  257.02 (98.33)  
+  protime (mean (sd))    10.73 (1.02)   
+  stage (mean (sd))       3.02 (0.88)   </code></pre>
+</div>
+<div id="categorical-variable-conversion" class="section level3">
+<h3>Categorical variable conversion</h3>
+<p>Most of the categorical variables are coded numerically, so we either have to transform them to factors in the dataset or use factorVars argument to transform them on-the-fly. Also it’s a better practice to specify which variables to summarize by the vars argument, and exclude the ID variable(s). How do we know which ones are numerically-coded categorical variables? Please check your data dictionary (in this case help(pbc)). This time I am saving the result object in a variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get variables names
+<span class="kw">dput</span>(<span class="kw">names</span>(pbc))</code></pre></div>
+<pre><code>c(&quot;id&quot;, &quot;time&quot;, &quot;status&quot;, &quot;trt&quot;, &quot;age&quot;, &quot;sex&quot;, &quot;ascites&quot;, &quot;hepato&quot;, 
+&quot;spiders&quot;, &quot;edema&quot;, &quot;bili&quot;, &quot;chol&quot;, &quot;albumin&quot;, &quot;copper&quot;, &quot;alk.phos&quot;, 
+&quot;ast&quot;, &quot;trig&quot;, &quot;platelet&quot;, &quot;protime&quot;, &quot;stage&quot;)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Vector of variables to summarize
+myVars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;time&quot;</span>, <span class="st">&quot;status&quot;</span>, <span class="st">&quot;trt&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;ascites&quot;</span>, <span class="st">&quot;hepato&quot;</span>,
+          <span class="st">&quot;spiders&quot;</span>, <span class="st">&quot;edema&quot;</span>, <span class="st">&quot;bili&quot;</span>, <span class="st">&quot;chol&quot;</span>, <span class="st">&quot;albumin&quot;</span>, <span class="st">&quot;copper&quot;</span>, <span class="st">&quot;alk.phos&quot;</span>,
+          <span class="st">&quot;ast&quot;</span>, <span class="st">&quot;trig&quot;</span>, <span class="st">&quot;platelet&quot;</span>, <span class="st">&quot;protime&quot;</span>, <span class="st">&quot;stage&quot;</span>)
+## Vector of categorical variables that need transformation
+catVars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;status&quot;</span>, <span class="st">&quot;trt&quot;</span>, <span class="st">&quot;ascites&quot;</span>, <span class="st">&quot;hepato&quot;</span>,
+             <span class="st">&quot;spiders&quot;</span>, <span class="st">&quot;edema&quot;</span>, <span class="st">&quot;stage&quot;</span>)
+## Create a TableOne object
+tab2 &lt;-<span class="st"> </span><span class="kw">CreateTableOne</span>(<span class="dt">vars =</span> myVars, <span class="dt">data =</span> pbc, <span class="dt">factorVars =</span> catVars)</code></pre></div>
+<p>OK. It’s more interpretable now. Binary categorical variables are summarized as counts and percentages of the second level. For example, if it is coded as 0 and 1, the “1” level is summarized. For 3+ category variable all levels are summarized. Please bear in mind, the percentages are calculated after excluding missing values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab2</code></pre></div>
+<pre><code>                      
+                       Overall          
+  n                        418          
+  time (mean (sd))     1917.78 (1104.67)
+  status (%)                            
+     0                     232 (55.5)   
+     1                      25 ( 6.0)   
+     2                     161 (38.5)   
+  trt = 2 (%)              154 (49.4)   
+  age (mean (sd))        50.74 (10.45)  
+  sex = f (%)              374 (89.5)   
+  ascites = 1 (%)           24 ( 7.7)   
+  hepato = 1 (%)           160 (51.3)   
+  spiders = 1 (%)           90 (28.8)   
+  edema (%)                             
+     0                     354 (84.7)   
+     0.5                    44 (10.5)   
+     1                      20 ( 4.8)   
+  bili (mean (sd))        3.22 (4.41)   
+  chol (mean (sd))      369.51 (231.94) 
+  albumin (mean (sd))     3.50 (0.42)   
+  copper (mean (sd))     97.65 (85.61)  
+  alk.phos (mean (sd)) 1982.66 (2140.39)
+  ast (mean (sd))       122.56 (56.70)  
+  trig (mean (sd))      124.70 (65.15)  
+  platelet (mean (sd))  257.02 (98.33)  
+  protime (mean (sd))    10.73 (1.02)   
+  stage (%)                             
+     1                      21 ( 5.1)   
+     2                      92 (22.3)   
+     3                     155 (37.6)   
+     4                     144 (35.0)   </code></pre>
+</div>
+<div id="showing-all-levels-for-categorical-variables" class="section level3">
+<h3>Showing all levels for categorical variables</h3>
+<p>If you want to show all levels, you can use showAllLevels argument to the print() method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(tab2, <span class="dt">showAllLevels =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>                      
+                       level Overall          
+  n                              418          
+  time (mean (sd))           1917.78 (1104.67)
+  status (%)           0         232 (55.5)   
+                       1          25 ( 6.0)   
+                       2         161 (38.5)   
+  trt (%)              1         158 (50.6)   
+                       2         154 (49.4)   
+  age (mean (sd))              50.74 (10.45)  
+  sex (%)              m          44 (10.5)   
+                       f         374 (89.5)   
+  ascites (%)          0         288 (92.3)   
+                       1          24 ( 7.7)   
+  hepato (%)           0         152 (48.7)   
+                       1         160 (51.3)   
+  spiders (%)          0         222 (71.2)   
+                       1          90 (28.8)   
+  edema (%)            0         354 (84.7)   
+                       0.5        44 (10.5)   
+                       1          20 ( 4.8)   
+  bili (mean (sd))              3.22 (4.41)   
+  chol (mean (sd))            369.51 (231.94) 
+  albumin (mean (sd))           3.50 (0.42)   
+  copper (mean (sd))           97.65 (85.61)  
+  alk.phos (mean (sd))       1982.66 (2140.39)
+  ast (mean (sd))             122.56 (56.70)  
+  trig (mean (sd))            124.70 (65.15)  
+  platelet (mean (sd))        257.02 (98.33)  
+  protime (mean (sd))          10.73 (1.02)   
+  stage (%)            1          21 ( 5.1)   
+                       2          92 (22.3)   
+                       3         155 (37.6)   
+                       4         144 (35.0)   </code></pre>
+</div>
+<div id="detailed-information-including-missingness" class="section level3">
+<h3>Detailed information including missingness</h3>
+<p>If you need more detailed information including the number/proportion missing. Use the summary() method on the result object. The continuous variables are shown first, and the categorical variables are shown second.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab2)</code></pre></div>
+<pre><code>
+     ### Summary of continuous variables ###
+
+strata: Overall
+           n miss p.miss mean     sd median    p25  p75   min   max  skew kurt
+time     418    0    0.0 1918 1104.7   1730 1092.8 2614  41.0  4795  0.47 -0.5
+age      418    0    0.0   51   10.4     51   42.8   58  26.3    78  0.09 -0.6
+bili     418    0    0.0    3    4.4      1    0.8    3   0.3    28  2.72  8.1
+chol     418  134   32.1  370  231.9    310  249.5  400 120.0  1775  3.41 14.3
+albumin  418    0    0.0    3    0.4      4    3.2    4   2.0     5 -0.47  0.6
+copper   418  108   25.8   98   85.6     73   41.2  123   4.0   588  2.30  7.6
+alk.phos 418  106   25.4 1983 2140.4   1259  871.5 1980 289.0 13862  2.99  9.7
+ast      418  106   25.4  123   56.7    115   80.6  152  26.4   457  1.45  4.3
+trig     418  136   32.5  125   65.1    108   84.2  151  33.0   598  2.52 11.8
+platelet 418   11    2.6  257   98.3    251  188.5  318  62.0   721  0.63  0.9
+protime  418    2    0.5   11    1.0     11   10.0   11   9.0    18  2.22 10.0
+
+=======================================================================================
+
+     ### Summary of categorical variables ### 
+
+strata: Overall
+     var   n miss p.miss level freq percent cum.percent
+  status 418    0    0.0     0  232    55.5        55.5
+                             1   25     6.0        61.5
+                             2  161    38.5       100.0
+                                                       
+     trt 418  106   25.4     1  158    50.6        50.6
+                             2  154    49.4       100.0
+                                                       
+     sex 418    0    0.0     m   44    10.5        10.5
+                             f  374    89.5       100.0
+                                                       
+ ascites 418  106   25.4     0  288    92.3        92.3
+                             1   24     7.7       100.0
+                                                       
+  hepato 418  106   25.4     0  152    48.7        48.7
+                             1  160    51.3       100.0
+                                                       
+ spiders 418  106   25.4     0  222    71.2        71.2
+                             1   90    28.8       100.0
+                                                       
+   edema 418    0    0.0     0  354    84.7        84.7
+                           0.5   44    10.5        95.2
+                             1   20     4.8       100.0
+                                                       
+   stage 418    6    1.4     1   21     5.1         5.1
+                             2   92    22.3        27.4
+                             3  155    37.6        65.0
+                             4  144    35.0       100.0
+                                                       </code></pre>
+</div>
+<div id="summarizing-nonnormal-variables" class="section level3">
+<h3>Summarizing nonnormal variables</h3>
+<p>It looks like most of the continuous variables are highly skewed except time, age, albumin, and platelet (biomarkers are usually distributed with strong positive skews). Summarizing them as such may please your future peer reviewer(s). Let’s do it with the nonnormal argument to the print() method. Can you see the difference. If you just say nonnormal = TRUE, all variables are summarized the “nonnormal” way.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">biomarkers &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;bili&quot;</span>,<span class="st">&quot;chol&quot;</span>,<span class="st">&quot;copper&quot;</span>,<span class="st">&quot;alk.phos&quot;</span>,<span class="st">&quot;ast&quot;</span>,<span class="st">&quot;trig&quot;</span>,<span class="st">&quot;protime&quot;</span>)
+<span class="kw">print</span>(tab2, <span class="dt">nonnormal =</span> biomarkers)</code></pre></div>
+<pre><code>                         
+                          Overall                  
+  n                           418                  
+  time (mean (sd))        1917.78 (1104.67)        
+  status (%)                                       
+     0                        232 (55.5)           
+     1                         25 ( 6.0)           
+     2                        161 (38.5)           
+  trt = 2 (%)                 154 (49.4)           
+  age (mean (sd))           50.74 (10.45)          
+  sex = f (%)                 374 (89.5)           
+  ascites = 1 (%)              24 ( 7.7)           
+  hepato = 1 (%)              160 (51.3)           
+  spiders = 1 (%)              90 (28.8)           
+  edema (%)                                        
+     0                        354 (84.7)           
+     0.5                       44 (10.5)           
+     1                         20 ( 4.8)           
+  bili (median [IQR])        1.40 [0.80, 3.40]     
+  chol (median [IQR])      309.50 [249.50, 400.00] 
+  albumin (mean (sd))        3.50 (0.42)           
+  copper (median [IQR])     73.00 [41.25, 123.00]  
+  alk.phos (median [IQR]) 1259.00 [871.50, 1980.00]
+  ast (median [IQR])       114.70 [80.60, 151.90]  
+  trig (median [IQR])      108.00 [84.25, 151.00]  
+  platelet (mean (sd))     257.02 (98.33)          
+  protime (median [IQR])    10.60 [10.00, 11.10]   
+  stage (%)                                        
+     1                         21 ( 5.1)           
+     2                         92 (22.3)           
+     3                        155 (37.6)           
+     4                        144 (35.0)           </code></pre>
+</div>
+<div id="fine-tuning" class="section level3">
+<h3>Fine tuning</h3>
+<p>If you want to fine tune the table further, please check out ?print.TableOne for the full list of options.</p>
+</div>
+</div>
+<div id="multiple-group-summary" class="section level2">
+<h2>Multiple group summary</h2>
+<p>Often you want to group patients and summarize group by group. It’s also pretty simple. Grouping by exposure categories is probably the most common way, so let’s do it by the treatment variable. According to ?pbc, it is coded as (1) D-penicillmain (it’s really “D-penicillamine”), (2) placebo, and (NA) not randomized. NA’s do not function as a grouping variable, so it is dropped. If you do want to show the result for the NA group, then you need to recoded it something other than NA.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab3 &lt;-<span class="st"> </span><span class="kw">CreateTableOne</span>(<span class="dt">vars =</span> myVars, <span class="dt">strata =</span> <span class="st">&quot;trt&quot;</span> , <span class="dt">data =</span> pbc, <span class="dt">factorVars =</span> catVars)
+tab3</code></pre></div>
+<pre><code>                      Stratified by trt
+                       1                 2                 p      test
+  n                        158               154                      
+  time (mean (sd))     2015.62 (1094.12) 1996.86 (1155.93)  0.883     
+  status (%)                                                0.894     
+     0                      83 (52.5)         85 ( 55.2)              
+     1                      10 ( 6.3)          9 (  5.8)              
+     2                      65 (41.1)         60 ( 39.0)              
+  trt = 2 (%)                0 ( 0.0)        154 (100.0)   &lt;0.001     
+  age (mean (sd))        51.42 (11.01)     48.58 (9.96)     0.018     
+  sex = f (%)              137 (86.7)        139 ( 90.3)    0.421     
+  ascites = 1 (%)           14 ( 8.9)         10 (  6.5)    0.567     
+  hepato = 1 (%)            73 (46.2)         87 ( 56.5)    0.088     
+  spiders = 1 (%)           45 (28.5)         45 ( 29.2)    0.985     
+  edema (%)                                                 0.877     
+     0                     132 (83.5)        131 ( 85.1)              
+     0.5                    16 (10.1)         13 (  8.4)              
+     1                      10 ( 6.3)         10 (  6.5)              
+  bili (mean (sd))        2.87 (3.63)       3.65 (5.28)     0.131     
+  chol (mean (sd))      365.01 (209.54)   373.88 (252.48)   0.748     
+  albumin (mean (sd))     3.52 (0.44)       3.52 (0.40)     0.874     
+  copper (mean (sd))     97.64 (90.59)     97.65 (80.49)    0.999     
+  alk.phos (mean (sd)) 2021.30 (2183.44) 1943.01 (2101.69)  0.747     
+  ast (mean (sd))       120.21 (54.52)    124.97 (58.93)    0.460     
+  trig (mean (sd))      124.14 (71.54)    125.25 (58.52)    0.886     
+  platelet (mean (sd))  258.75 (100.32)   265.20 (90.73)    0.555     
+  protime (mean (sd))    10.65 (0.85)      10.80 (1.14)     0.197     
+  stage (%)                                                 0.201     
+     1                      12 ( 7.6)          4 (  2.6)              
+     2                      35 (22.2)         32 ( 20.8)              
+     3                      56 (35.4)         64 ( 41.6)              
+     4                      55 (34.8)         54 ( 35.1)              </code></pre>
+<div id="testing" class="section level3">
+<h3>Testing</h3>
+<p>As you can see in the previous table, when there are two or more groups group comparison p-values are printed along with the table (well, let’s not argue the appropriateness of hypothesis testing for table 1 in an RCT for now.). Very small p-values are shown with the less than sign. The hypothesis test functions used by default are chisq.test() for categorical variables (with continuity correction) and oneway.test() for continous variables (with equal variance assumption, i.e., regular ANOVA). Two-group ANOVA is equivalent of t-test.</p>
+<p>You may be worried about the nonnormal variables and small cell counts in the stage variable. In such a situation, you can use the nonnormal argument like before as well as the exact (test) argument in the print() method. Now kruskal.test() is used for the nonnormal continous variables and fisher.test() is used for categorical variables specified in the exact argument. kruskal.test() is equivalent to wilcox.test() in the two-group case. The column named test is to indicate which p-values were calculated using the non-default tests.</p>
+<p>To also show standardized mean differences, use the smd option.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(tab3, <span class="dt">nonnormal =</span> biomarkers, <span class="dt">exact =</span> <span class="st">&quot;stage&quot;</span>, <span class="dt">smd =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>                         Stratified by trt
+                          1                         2                         p      test    SMD   
+  n                           158                       154                                        
+  time (mean (sd))        2015.62 (1094.12)         1996.86 (1155.93)          0.883          0.017
+  status (%)                                                                   0.894          0.054
+     0                         83 (52.5)                 85 ( 55.2)                                
+     1                         10 ( 6.3)                  9 (  5.8)                                
+     2                         65 (41.1)                 60 ( 39.0)                                
+  trt = 2 (%)                   0 ( 0.0)                154 (100.0)           &lt;0.001          NaN  
+  age (mean (sd))           51.42 (11.01)             48.58 (9.96)             0.018          0.270
+  sex = f (%)                 137 (86.7)                139 ( 90.3)            0.421          0.111
+  ascites = 1 (%)              14 ( 8.9)                 10 (  6.5)            0.567          0.089
+  hepato = 1 (%)               73 (46.2)                 87 ( 56.5)            0.088          0.207
+  spiders = 1 (%)              45 (28.5)                 45 ( 29.2)            0.985          0.016
+  edema (%)                                                                    0.877          0.058
+     0                        132 (83.5)                131 ( 85.1)                                
+     0.5                       16 (10.1)                 13 (  8.4)                                
+     1                         10 ( 6.3)                 10 (  6.5)                                
+  bili (median [IQR])        1.40 [0.80, 3.20]         1.30 [0.72, 3.60]       0.842 nonnorm  0.171
+  chol (median [IQR])      315.50 [247.75, 417.00]   303.50 [254.25, 377.00]   0.544 nonnorm  0.038
+  albumin (mean (sd))        3.52 (0.44)               3.52 (0.40)             0.874          0.018
+  copper (median [IQR])     73.00 [40.00, 121.00]     73.00 [43.00, 139.00]    0.717 nonnorm &lt;0.001
+  alk.phos (median [IQR]) 1214.50 [840.75, 2028.00] 1283.00 [922.50, 1949.75]  0.812 nonnorm  0.037
+  ast (median [IQR])       111.60 [76.73, 151.51]    117.40 [83.78, 151.90]    0.459 nonnorm  0.084
+  trig (median [IQR])      106.00 [84.50, 146.00]    113.00 [84.50, 155.00]    0.370 nonnorm  0.017
+  platelet (mean (sd))     258.75 (100.32)           265.20 (90.73)            0.555          0.067
+  protime (median [IQR])    10.60 [10.03, 11.00]      10.60 [10.00, 11.40]     0.588 nonnorm  0.146
+  stage (%)                                                                    0.205 exact    0.246
+     1                         12 ( 7.6)                  4 (  2.6)                                
+     2                         35 (22.2)                 32 ( 20.8)                                
+     3                         56 (35.4)                 64 ( 41.6)                                
+     4                         55 (34.8)                 54 ( 35.1)                                </code></pre>
+</div>
+</div>
+<div id="exporting" class="section level2">
+<h2>Exporting</h2>
+<p>My typical next step is to export the table to Excel for editing, and then to Word (clinical medical journals usually do not offer LaTeX submission).</p>
+<div id="quick-and-dirty-way" class="section level3">
+<h3>Quick and dirty way</h3>
+<p>The quick and dirty way that I usually use is copy and paste. Use the quote = TRUE argument to show the quotes and noSpaces = TRUE to remove spaces used to align text in the R console (the latter is optional). Now you can just copy and paste the whole thing to an Excel spread sheet. After pasting, click the small pasting icon to choose Use Text Import Wizard…, in the dialogue you can just click finish to fit the values in the appropriate cells. Then you can edit or re-align things as you like. I usualy center-align the group summaries, and right-aligh the p-values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(tab3, <span class="dt">nonnormal =</span> biomarkers, <span class="dt">exact =</span> <span class="st">&quot;stage&quot;</span>, <span class="dt">quote =</span> <span class="ot">TRUE</span>, <span class="dt">noSpaces =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>                           &quot;Stratified by trt&quot;
+ &quot;&quot;                         &quot;1&quot;                         &quot;2&quot;                         &quot;p&quot;      &quot;test&quot;   
+  &quot;n&quot;                       &quot;158&quot;                       &quot;154&quot;                       &quot;&quot;       &quot;&quot;       
+  &quot;time (mean (sd))&quot;        &quot;2015.62 (1094.12)&quot;         &quot;1996.86 (1155.93)&quot;         &quot;0.883&quot;  &quot;&quot;       
+  &quot;status (%)&quot;              &quot;&quot;                          &quot;&quot;                          &quot;0.894&quot;  &quot;&quot;       
+  &quot;   0&quot;                    &quot;83 (52.5)&quot;                 &quot;85 (55.2)&quot;                 &quot;&quot;       &quot;&quot;       
+  &quot;   1&quot;                    &quot;10 (6.3)&quot;                  &quot;9 (5.8)&quot;                   &quot;&quot;       &quot;&quot;       
+  &quot;   2&quot;                    &quot;65 (41.1)&quot;                 &quot;60 (39.0)&quot;                 &quot;&quot;       &quot;&quot;       
+  &quot;trt = 2 (%)&quot;             &quot;0 (0.0)&quot;                   &quot;154 (100.0)&quot;               &quot;&lt;0.001&quot; &quot;&quot;       
+  &quot;age (mean (sd))&quot;         &quot;51.42 (11.01)&quot;             &quot;48.58 (9.96)&quot;              &quot;0.018&quot;  &quot;&quot;       
+  &quot;sex = f (%)&quot;             &quot;137 (86.7)&quot;                &quot;139 (90.3)&quot;                &quot;0.421&quot;  &quot;&quot;       
+  &quot;ascites = 1 (%)&quot;         &quot;14 (8.9)&quot;                  &quot;10 (6.5)&quot;                  &quot;0.567&quot;  &quot;&quot;       
+  &quot;hepato = 1 (%)&quot;          &quot;73 (46.2)&quot;                 &quot;87 (56.5)&quot;                 &quot;0.088&quot;  &quot;&quot;       
+  &quot;spiders = 1 (%)&quot;         &quot;45 (28.5)&quot;                 &quot;45 (29.2)&quot;                 &quot;0.985&quot;  &quot;&quot;       
+  &quot;edema (%)&quot;               &quot;&quot;                          &quot;&quot;                          &quot;0.877&quot;  &quot;&quot;       
+  &quot;   0&quot;                    &quot;132 (83.5)&quot;                &quot;131 (85.1)&quot;                &quot;&quot;       &quot;&quot;       
+  &quot;   0.5&quot;                  &quot;16 (10.1)&quot;                 &quot;13 (8.4)&quot;                  &quot;&quot;       &quot;&quot;       
+  &quot;   1&quot;                    &quot;10 (6.3)&quot;                  &quot;10 (6.5)&quot;                  &quot;&quot;       &quot;&quot;       
+  &quot;bili (median [IQR])&quot;     &quot;1.40 [0.80, 3.20]&quot;         &quot;1.30 [0.72, 3.60]&quot;         &quot;0.842&quot;  &quot;nonnorm&quot;
+  &quot;chol (median [IQR])&quot;     &quot;315.50 [247.75, 417.00]&quot;   &quot;303.50 [254.25, 377.00]&quot;   &quot;0.544&quot;  &quot;nonnorm&quot;
+  &quot;albumin (mean (sd))&quot;     &quot;3.52 (0.44)&quot;               &quot;3.52 (0.40)&quot;               &quot;0.874&quot;  &quot;&quot;       
+  &quot;copper (median [IQR])&quot;   &quot;73.00 [40.00, 121.00]&quot;     &quot;73.00 [43.00, 139.00]&quot;     &quot;0.717&quot;  &quot;nonnorm&quot;
+  &quot;alk.phos (median [IQR])&quot; &quot;1214.50 [840.75, 2028.00]&quot; &quot;1283.00 [922.50, 1949.75]&quot; &quot;0.812&quot;  &quot;nonnorm&quot;
+  &quot;ast (median [IQR])&quot;      &quot;111.60 [76.73, 151.51]&quot;    &quot;117.40 [83.78, 151.90]&quot;    &quot;0.459&quot;  &quot;nonnorm&quot;
+  &quot;trig (median [IQR])&quot;     &quot;106.00 [84.50, 146.00]&quot;    &quot;113.00 [84.50, 155.00]&quot;    &quot;0.370&quot;  &quot;nonnorm&quot;
+  &quot;platelet (mean (sd))&quot;    &quot;258.75 (100.32)&quot;           &quot;265.20 (90.73)&quot;            &quot;0.555&quot;  &quot;&quot;       
+  &quot;protime (median [IQR])&quot;  &quot;10.60 [10.03, 11.00]&quot;      &quot;10.60 [10.00, 11.40]&quot;      &quot;0.588&quot;  &quot;nonnorm&quot;
+  &quot;stage (%)&quot;               &quot;&quot;                          &quot;&quot;                          &quot;0.205&quot;  &quot;exact&quot;  
+  &quot;   1&quot;                    &quot;12 (7.6)&quot;                  &quot;4 (2.6)&quot;                   &quot;&quot;       &quot;&quot;       
+  &quot;   2&quot;                    &quot;35 (22.2)&quot;                 &quot;32 (20.8)&quot;                 &quot;&quot;       &quot;&quot;       
+  &quot;   3&quot;                    &quot;56 (35.4)&quot;                 &quot;64 (41.6)&quot;                 &quot;&quot;       &quot;&quot;       
+  &quot;   4&quot;                    &quot;55 (34.8)&quot;                 &quot;54 (35.1)&quot;                 &quot;&quot;       &quot;&quot;       </code></pre>
+</div>
+<div id="real-export-way" class="section level3">
+<h3>Real export way</h3>
+<p>If you do not like the manual labor of copy-and-paste, you can potentially automate the task by the following way. The print() method for a TableOne object invisibly return a matrix identical to what you see. You can capture this by assignment to a variable (here tab3Mat). Do not use the quote argument in this case, the noSpaces argument is again optional. The self-contradictory printToggle = FALSE for the print() method avoids unnecessary printing if you wish. Then you can save the object to a CSV file. As it is a regular matrix object, you can save it to an Excel file using packages such as XLConnect.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab3Mat &lt;-<span class="st"> </span><span class="kw">print</span>(tab3, <span class="dt">nonnormal =</span> biomarkers, <span class="dt">exact =</span> <span class="st">&quot;stage&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">noSpaces =</span> <span class="ot">TRUE</span>, <span class="dt">printToggle =</span> <span class="ot">FALSE</span>)
+## Save to a CSV file
+<span class="kw">write.csv</span>(tab3Mat, <span class="dt">file =</span> <span class="st">&quot;myTable.csv&quot;</span>)</code></pre></div>
+</div>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2>Miscellaneous</h2>
+<div id="categorical-or-continous-variables-only" class="section level3">
+<h3>Categorical or continous variables-only</h3>
+<p>You may want to see the categorical or continous variables only. You can do this by accessing the CatTable part and ContTable part of the TableOne object as follows. summary() methods are defined for both as well as print() method with various arguments. Please see ?print.CatTable and ?print.ContTable for details.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Categorical part only
+tab3<span class="op">$</span>CatTable</code></pre></div>
+<pre><code>                 Stratified by trt
+                  1           2            p      test
+  n               158         154                     
+  status (%)                                0.894     
+     0             83 (52.5)   85 ( 55.2)             
+     1             10 ( 6.3)    9 (  5.8)             
+     2             65 (41.1)   60 ( 39.0)             
+  trt = 2 (%)       0 ( 0.0)  154 (100.0)  &lt;0.001     
+  sex = f (%)     137 (86.7)  139 ( 90.3)   0.421     
+  ascites = 1 (%)  14 ( 8.9)   10 (  6.5)   0.567     
+  hepato = 1 (%)   73 (46.2)   87 ( 56.5)   0.088     
+  spiders = 1 (%)  45 (28.5)   45 ( 29.2)   0.985     
+  edema (%)                                 0.877     
+     0            132 (83.5)  131 ( 85.1)             
+     0.5           16 (10.1)   13 (  8.4)             
+     1             10 ( 6.3)   10 (  6.5)             
+  stage (%)                                 0.201     
+     1             12 ( 7.6)    4 (  2.6)             
+     2             35 (22.2)   32 ( 20.8)             
+     3             56 (35.4)   64 ( 41.6)             
+     4             55 (34.8)   54 ( 35.1)             </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Continous part only
+<span class="kw">print</span>(tab3<span class="op">$</span>ContTable, <span class="dt">nonnormal =</span> biomarkers)</code></pre></div>
+<pre><code>                         Stratified by trt
+                          1                         2                         p      test   
+  n                       158                       154                                     
+  time (mean (sd))        2015.62 (1094.12)         1996.86 (1155.93)          0.883        
+  age (mean (sd))           51.42 (11.01)             48.58 (9.96)             0.018        
+  bili (median [IQR])        1.40 [0.80, 3.20]         1.30 [0.72, 3.60]       0.842 nonnorm
+  chol (median [IQR])      315.50 [247.75, 417.00]   303.50 [254.25, 377.00]   0.544 nonnorm
+  albumin (mean (sd))        3.52 (0.44)               3.52 (0.40)             0.874        
+  copper (median [IQR])     73.00 [40.00, 121.00]     73.00 [43.00, 139.00]    0.717 nonnorm
+  alk.phos (median [IQR]) 1214.50 [840.75, 2028.00] 1283.00 [922.50, 1949.75]  0.812 nonnorm
+  ast (median [IQR])       111.60 [76.73, 151.51]    117.40 [83.78, 151.90]    0.459 nonnorm
+  trig (median [IQR])      106.00 [84.50, 146.00]    113.00 [84.50, 155.00]    0.370 nonnorm
+  platelet (mean (sd))     258.75 (100.32)           265.20 (90.73)            0.555        
+  protime (median [IQR])    10.60 [10.03, 11.00]      10.60 [10.00, 11.40]     0.588 nonnorm</code></pre>
+<hr />
+<ul>
+<li>Authored by Kazuki Yoshida</li>
+<li>CRAN page: <a href="https://cran.r-project.org/package=tableone" class="uri">https://cran.r-project.org/package=tableone</a></li>
+<li>github page: <a href="https://github.com/kaz-yos/tableone" class="uri">https://github.com/kaz-yos/tableone</a></li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

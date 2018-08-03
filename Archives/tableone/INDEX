@@ -1,0 +1,31 @@
+CreateCatTable          Create an object summarizing categorical
+                        variables
+CreateContTable         Create an object summarizing continous
+                        variables
+CreateTableOne          Create an object summarizing both continuous
+                        and categorical variables
+ExtractSmd              Extract standardized mean differences from a
+                        (svy)TableOne object
+ShowRegTable            Format regression results in medically decent
+                        format
+print.CatTable          Format and print 'CatTable' class objects
+print.ContTable         Format and print 'ContTable' class objects
+print.TableOne          Format and print 'TableOne' class objects
+print.svyCatTable       Format and print 'svyCatTable' class objects
+print.svyContTable      Format and print 'svyContTable' class objects
+summary.CatTable        Shows all results in a 'CatTable' class object
+summary.ContTable       Shows all results in a 'ContTable' class object
+summary.TableOne        Shows all results in a '(svy)TableOne' class
+                        object
+summary.svyCatTable     Shows all results in a 'svyCatTable' class
+                        object
+summary.svyContTable    Shows all results in a 'svyContTable' class
+                        object
+svyCreateCatTable       Create an object summarizing categorical
+                        variables for weighted data
+svyCreateContTable      Create an object summarizing continous
+                        variables for weighted dataset
+svyCreateTableOne       Create an object summarizing both continuous
+                        and categorical variables for weighted data
+tableone-package        Create "Table 1" to describe baseline
+                        characteristics
